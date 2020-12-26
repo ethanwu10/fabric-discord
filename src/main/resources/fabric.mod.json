@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "fabric-discord",
+  "version": "${mod_version}",
+  "name": "Fabric Discord",
+  "description": "Discord bridge for Fabric",
+  "authors": [
+    "ethanwu10"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ethanwu10/fabric-discord",
+    "sources": "https://github.com/ethanwu10/fabric-discord"
+  },
+  "license": "GPLv3",
+
+  "environment": "server",
+  "entrypoints": {
+    "server": [
+      "dev.ethanwu.mc.fabricdiscord.FabricDiscord"
+    ]
+  },
+  "mixins": [
+    "fabricdiscord.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.10.0",
+    "minecraft": "1.16.x"
+  }
+}

@@ -1,0 +1,10 @@
+### Gradle / build ###
+.gradle
+build
+
+### IntelliJ ###
+.idea
+out
+
+### Fabric-Loom IJ ###
+run
