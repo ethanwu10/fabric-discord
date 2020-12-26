@@ -52,13 +52,14 @@ class MinecraftChat {
                 val playerName = text.args[0] as Text
                 val messageContentsRaw = text.args[1] as String
 
-                val messageContentsRendered = MarkdownToMinecraft.render(messageContentsRaw)
-                broadcastMessage(
-                    server,
-                    TranslatableText(text.key, playerName, messageContentsRendered),
-                    MessageType.CHAT,
-                    uuid
-                )
+                MarkdownToMinecraft.render(messageContentsRaw).forEach { messageContentsRendered ->
+                    broadcastMessage(
+                        server,
+                        TranslatableText(text.key, playerName, messageContentsRendered),
+                        MessageType.CHAT,
+                        uuid
+                    )
+                }
             }
         }
 

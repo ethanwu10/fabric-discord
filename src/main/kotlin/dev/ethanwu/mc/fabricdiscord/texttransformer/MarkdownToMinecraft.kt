@@ -38,7 +38,7 @@ class MarkdownToMinecraft {
 
         private val parser = Parser.builder(parserOpts).build()
 
-        fun render(markdown: String): MinecraftText {
+        fun render(markdown: String): List<MinecraftText> {
             val ast = parser.parse(markdown)
             return renderDocument(ast)
         }
@@ -47,13 +47,13 @@ class MarkdownToMinecraft {
             return "${node.nodeName} ${node.children.map { formatAst(it) }}"
         }
 
-        private fun renderDocument(node: Node): MinecraftText {
-            val root = LiteralText("")
-            renderNode(node, Style.EMPTY, root)
-            return root
+        private fun renderDocument(node: Node): List<MinecraftText> {
+            val w = TextWriter()
+            renderNode(node, Style.EMPTY, w)
+            return w.lines
         }
 
-        private fun renderNode(node: Node, style: Style, appender: MutableText) {
+        private fun renderNode(node: Node, style: Style, appender: TextWriter) {
             val newStyle = renderNodeStyle(node, style)
             if (node is FlexmarkText ||
                 // Discord doesn't support inline HTML, so render it literally
@@ -77,6 +77,30 @@ class MarkdownToMinecraft {
                 is Code -> style.withColor(TextColor.fromRgb(0xcccccc))
                 is Strikethrough -> style.withFormatting(Formatting.STRIKETHROUGH)
                 else -> style
+            }
+        }
+    }
+
+    private class TextWriter {
+        companion object {
+            const val BREAK_LINES = false
+        }
+
+        val lines: MutableList<MutableText> = mutableListOf(LiteralText(""))
+
+        private fun appendOne(text: MinecraftText) {
+            lines.last().append(text)
+        }
+
+        fun append(text: MinecraftText) {
+            val str = text.asString()
+            if (BREAK_LINES && str.contains('\n')) {
+                val style = text.style
+                val components = str.split('\n').map { LiteralText(it).setStyle(style) }
+                appendOne(components[0])
+                lines.addAll(components.subList(1, components.size))
+            } else {
+                appendOne(text)
             }
         }
     }
