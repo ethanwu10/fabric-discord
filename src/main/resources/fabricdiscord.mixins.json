@@ -1,9 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.ethanwu.mc.fabricdiscord.mixins",
+  "package": "dev.ethanwu.mc.fabricdiscord.minecraft.mixin.mixins",
   "compatibilityLevel": "JAVA_8",
   "server": [
+    "CommandManagerMixin",
+    "MinecraftServerMixin",
     "PlayerManagerMixin"
   ],
   "injectors": {

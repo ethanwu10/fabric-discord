@@ -12,7 +12,6 @@
     "sources": "https://github.com/ethanwu10/fabric-discord"
   },
   "license": "GPLv3",
-
   "environment": "server",
   "entrypoints": {
     "server": [
@@ -22,7 +21,6 @@
   "mixins": [
     "fabricdiscord.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.10.0",
     "minecraft": "1.16.x"
