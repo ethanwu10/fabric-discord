@@ -19,7 +19,7 @@ class Manager(
     private val minecraftChatHolder: MinecraftChatHolder,
 ) : Disposable, Reloadable {
     companion object {
-        val LOGGER = LogManager.getLogger()
+        val LOGGER = LogManager.getLogger()!!
     }
 
     private inner class Instance(

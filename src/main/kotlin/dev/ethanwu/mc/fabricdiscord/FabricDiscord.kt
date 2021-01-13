@@ -11,7 +11,7 @@ import dev.ethanwu.mc.fabricdiscord.util.reactor.Logger as ReactorCustomLogger
 
 class FabricDiscord : DedicatedServerModInitializer {
     companion object {
-        val LOGGER: Logger = LogManager.getLogger()
+        val LOGGER = LogManager.getLogger()!!
 
         lateinit var config: ServerConfig
     }

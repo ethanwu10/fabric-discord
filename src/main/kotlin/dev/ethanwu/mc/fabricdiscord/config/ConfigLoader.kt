@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger
 
 class ConfigLoader(private val fabricLoader: FabricLoader) {
     companion object {
-        val LOGGER: Logger = LogManager.getLogger()
+        val LOGGER = LogManager.getLogger()!!
 
         private val webhookUrlRegex = Regex("https://[^/]+/api/webhooks/([0-9]+)/([a-zA-Z0-9_-]+)")
     }

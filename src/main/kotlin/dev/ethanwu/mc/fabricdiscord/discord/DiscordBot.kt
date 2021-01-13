@@ -27,7 +27,7 @@ private typealias OutgoingSender = (Flux<Message>) -> Mono<Void>
 
 class DiscordBot(config: ServerConfig.DiscordConfig) : Disposable {
     companion object {
-        val LOGGER = LogManager.getLogger()
+        val LOGGER = LogManager.getLogger()!!
     }
 
     private val heldResources = Disposables.composite()
