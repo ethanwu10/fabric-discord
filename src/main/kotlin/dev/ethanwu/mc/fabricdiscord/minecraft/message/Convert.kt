@@ -15,6 +15,7 @@ fun convertToMessage(text: Text, type: MessageType?, uuid: UUID): Message =
             "chat.type.text" -> PlayerTextChatMessage(text, uuid.nullable)
             "chat.type.emote" -> PlayerEmoteChatMessage(text, uuid.nullable)
             "chat.type.announcement" -> AnnouncementChatMessage(text, uuid.nullable)
+            "chat.type.admin" -> CommandFeedbackSystemMessage(text)
             else -> null
         }
         else -> null

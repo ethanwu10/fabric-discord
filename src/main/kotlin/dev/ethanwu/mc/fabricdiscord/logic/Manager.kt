@@ -4,6 +4,7 @@ import dev.ethanwu.mc.fabricdiscord.config.ConfigLoader
 import dev.ethanwu.mc.fabricdiscord.config.ServerConfig
 import dev.ethanwu.mc.fabricdiscord.discord.DiscordBot
 import dev.ethanwu.mc.fabricdiscord.minecraft.MinecraftChat
+import dev.ethanwu.mc.fabricdiscord.minecraft.message.ChatMessage
 import dev.ethanwu.mc.fabricdiscord.minecraft.message.Message
 import dev.ethanwu.mc.fabricdiscord.util.DisposableHolder
 import dev.ethanwu.mc.fabricdiscord.util.Reloadable
@@ -11,6 +12,7 @@ import dev.ethanwu.mc.fabricdiscord.util.reactor.linkDataOnly
 import org.apache.logging.log4j.LogManager
 import reactor.core.Disposable
 import reactor.core.Disposables
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Sinks
 import java.util.function.Supplier
 
@@ -50,19 +52,11 @@ class Manager(
                     .retry(5)
                     .subscribe()
                 )
-                heldResources.add(discordBot.onChatMessage()
-                    // TODO: move to server thread
+                heldResources.add(minecraftChatHolder.subscribeToIncomingMessages(discordBot.onChatMessage()
                     .doOnError { LOGGER.error("Error in inbound send", it) }
                     // FIXME: remove retry cap / add backoff
                     .retry(5)
-                    .subscribe {
-                        try {
-                            minecraftChatHolder.get().broadcastMessage(it)
-                        } catch (e: Exception) {
-                            LOGGER.error("Error in inbound send", it)
-                        }
-                    }
-                )
+                ))
                 // FIXME: implement admin channels
             }
         }
@@ -113,5 +107,7 @@ class Manager(
          * *at least once*. In essence, it has `lateinit` semantics.
          */
         override fun get(): MinecraftChat
+
+        fun subscribeToIncomingMessages(flux: Flux<ChatMessage>): Disposable
     }
 }
